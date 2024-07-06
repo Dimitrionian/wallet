@@ -3,11 +3,11 @@ from django.conf import settings
 from django.urls import reverse
 from rest_framework.pagination import LimitOffsetPagination
 
-from api.viewsets import TransactionViewSet
-from core.models import Transaction
+from api.viewsets import TransactionViewSet, WalletViewSet
+from core.models import Transaction, Wallet
 
 
-def test_get_paginated_response(rf):
+def test_paginated_transactions_response(rf):
     transactions = Transaction.objects.count()
 
     pagination = LimitOffsetPagination()
@@ -25,3 +25,13 @@ def test_get_paginated_response(rf):
     content = json.loads(response.rendered_content)
     assert count == content["count"]
     assert transactions == content["count"]
+
+
+def test_wallets_response(rf):
+    wallets = Wallet.objects.count()
+
+    url = f"{settings.TEST_URL.rstrip('/')}{reverse('wallets-list')}"
+    request = rf.get(url)
+    response = WalletViewSet.as_view({'get': 'list'})(request)
+    content = json.loads(response.rendered_content)
+    assert wallets == content["count"]
