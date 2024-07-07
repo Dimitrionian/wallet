@@ -2,7 +2,7 @@ from rest_framework import mixins
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from api.base import BaseAPIViewSet
 from api.serializers import WalletSerializer, TransactionSerializer
@@ -18,11 +18,9 @@ class WalletViewSet(
 ):
     queryset = Wallet.objects.all().order_by("label")
     serializer_class = WalletSerializer
-    filter_backends = [
-        DjangoFilterBackend,
-        SearchFilter,
-    ]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["id", "label"]
+    ordering_fields = ["label"]
 
     @extend_schema(
         responses={
@@ -44,11 +42,9 @@ class TransactionViewSet(
 ):
     queryset = Transaction.objects.select_related("wallet").order_by("amount")
     serializer_class = TransactionSerializer
-    filter_backends = [
-        DjangoFilterBackend,
-        SearchFilter,
-    ]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["wallet__id", "_txid"]
+    ordering_fields = ["amount", "_txid"]
 
     @extend_schema(
         responses={
