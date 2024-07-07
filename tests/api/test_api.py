@@ -1,5 +1,8 @@
 import json
+from decimal import Decimal
+
 from django.conf import settings
+from django.db.models import Sum
 from django.urls import reverse
 from rest_framework.pagination import LimitOffsetPagination
 
@@ -28,10 +31,14 @@ def test_paginated_transactions_response(rf):
 
 
 def test_wallets_response(rf):
-    wallets = Wallet.objects.count()
+    wallets = Wallet.objects.all()
 
     url = f"{settings.TEST_URL.rstrip('/')}{reverse('wallets-list')}"
     request = rf.get(url)
     response = WalletViewSet.as_view({'get': 'list'})(request)
     content = json.loads(response.rendered_content)
-    assert wallets == content["count"]
+    assert wallets.count() == content["count"]
+
+    balance = Decimal(sum(wallet["balance"] for wallet in content["results"]))
+    _balance = Transaction.objects.aggregate(amount=Sum("amount", default=Decimal("0.0")))["amount"]
+    assert balance == _balance

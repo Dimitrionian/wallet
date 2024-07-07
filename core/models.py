@@ -22,8 +22,6 @@ class Wallet(models.Model):
     def balance(self) -> Decimal:
         """Calculate balance as sum of the wallet transactions"""
 
-        _test = self.transactions.all()
-        test = self.transactions.all().aggregate(amount=Sum("amount", default=Decimal("0.0")))
         return self.transactions.aggregate(amount=Sum("amount", default=Decimal("0.0")))["amount"]
 
     def __str__(self) -> str:
