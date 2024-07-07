@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
-from decouple import config
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-u!%+wwbi+=ctkc_pbwm9(a+41b*bl!kl8q8b(m==6m!7bx2p_k"  # pragma: allowlist secret
+SECRET_KEY = os.environ.get('SECRET_KEY')  # pragma: allowlist secret
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["0.0.0.0"]
 CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8000", "http://localhost:8000"]
 
 
@@ -80,28 +83,20 @@ TEMPLATES = [
     },
 ]
 
+STATIC_ROOT = "/var/www/static"
+STATIC_URL = "static/"
+
 WSGI_APPLICATION = "wallet.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 # Database
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": config("MYSQL_DATABASE"),
-        "USER": config("MYSQL_USER"),
-        "PASSWORD": config("MYSQL_PASSWORD"),
-        "HOST": config("DB_HOST", "db"),  # Use 'db' as default from .env
-        "PORT": config("DB_PORT", "3307"),  # Use '3307' as default from .env
+        "NAME": os.environ.get("MYSQL_DATABASE"),
+        "USER": os.environ.get("MYSQL_USER"),
+        "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST", "db"),  # Use 'db' as default from .env
+        "PORT": os.environ.get("DB_PORT", "3306"),  # Use '3306' as default from .env
     }
 }
 
@@ -151,7 +146,7 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 5,
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "DEFAULT_PARSER_CLASSES": (
-        "rest_framework_json_api.parsers.JSONParser",
+        'rest_framework.parsers.JSONParser',
         "rest_framework.parsers.FormParser",
         "rest_framework.parsers.MultiPartParser",
     ),

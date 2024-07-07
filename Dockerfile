@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11
+FROM python:3.11 as python-base
 
 # Install core libs
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
@@ -54,12 +54,8 @@ COPY $DOCKER_BUILD_REQUIREMENTS /tmp/install/
 WORKDIR /tmp/install
 RUN pip install -r $DOCKER_BUILD_REQUIREMENTS
 
-# Prepare Gunicorn Conf
-#RUN id app >/dev/null 2>&1 || useradd -m app
-#COPY --chown=app ./config /home/app/config/
-
 # Move app source
-COPY --chown=app ./src /home/app/libs/
+COPY --chown=app . /home/app/libs/
 
 RUN chmod +664 -R /home/app
 RUN chmod +x -R /home/app/libs
