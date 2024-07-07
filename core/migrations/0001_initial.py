@@ -5,31 +5,80 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Wallet',
+            name="Wallet",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('label', models.CharField(help_text='The wallet label', max_length=16, verbose_name='Label')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "label",
+                    models.CharField(
+                        help_text="The wallet label",
+                        max_length=16,
+                        verbose_name="Label",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Wallet',
-                'verbose_name_plural': 'Wallets',
+                "verbose_name": "Wallet",
+                "verbose_name_plural": "Wallets",
             },
         ),
         migrations.CreateModel(
-            name='Transaction',
+            name="Transaction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('_txid', models.CharField(help_text='Transaction id', max_length=64, unique=True, verbose_name='TXID')),
-                ('amount', models.DecimalField(decimal_places=18, default=0, help_text='Transaction amount', max_digits=23, verbose_name='Amount')),
-                ('wallet', models.ForeignKey(blank=True, help_text='The transaction wallet', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='transactions', to='core.wallet', verbose_name='Wallet')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "_txid",
+                    models.CharField(
+                        help_text="Transaction id",
+                        max_length=64,
+                        unique=True,
+                        verbose_name="TXID",
+                    ),
+                ),
+                (
+                    "amount",
+                    models.DecimalField(
+                        decimal_places=18,
+                        default=0,
+                        help_text="Transaction amount",
+                        max_digits=23,
+                        verbose_name="Amount",
+                    ),
+                ),
+                (
+                    "wallet",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="The transaction wallet",
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="transactions",
+                        to="core.wallet",
+                        verbose_name="Wallet",
+                    ),
+                ),
             ],
         ),
     ]

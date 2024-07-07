@@ -4,9 +4,9 @@ markdown==3.6
 django-filter==24.2
 pytest-django==4.8.0
 factory_boy==3.3.0
-pycryptotools==0.2.1
 drf-spectacular
-drf-spectacular[sidecar]==2024.7.1
+drf-spectacular[sidecar]
 django-filter==24.2
 django-extensions==3.2.3
 django-cors-headers==4.4.0
+pre-commit

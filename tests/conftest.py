@@ -21,11 +21,15 @@ def setup_db(db):
 
     # Generate transactions for the wallet
     for i in range(1, 6):
-        TransactionFactory(wallet=wallet, amount=Decimal(i * 2000.0), txid=sha256().hexdigest())
+        TransactionFactory(
+            wallet=wallet, amount=Decimal(i * 2000.0), txid=sha256().hexdigest()
+        )
 
     # Create a test wallet #2
     _wallet = WalletFactory(label="Wallet #2")
 
     # Generate transactions for the wallet
     for i in range(6, 11):
-        TransactionFactory(wallet=_wallet, amount=Decimal(i * 2000.0), txid=sha256().hexdigest())
+        TransactionFactory(
+            wallet=_wallet, amount=Decimal(i * 2000.0), txid=sha256().hexdigest()
+        )

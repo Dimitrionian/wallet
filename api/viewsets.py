@@ -1,4 +1,4 @@
-from rest_framework import mixins, status
+from rest_framework import mixins
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from django_filters.rest_framework import DjangoFilterBackend
@@ -27,8 +27,7 @@ class WalletViewSet(
     @extend_schema(
         responses={
             201: OpenApiResponse(
-                response=WalletSerializer,
-                description="Create a wallet"
+                response=WalletSerializer, description="Create a wallet"
             ),
         },
     )
@@ -54,8 +53,7 @@ class TransactionViewSet(
     @extend_schema(
         responses={
             201: OpenApiResponse(
-                response=TransactionSerializer,
-                description="Create a transaction"
+                response=TransactionSerializer, description="Create a transaction"
             ),
         }
     )

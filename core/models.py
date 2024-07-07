@@ -22,7 +22,9 @@ class Wallet(models.Model):
     def balance(self) -> Decimal:
         """Calculate balance as sum of the wallet transactions"""
 
-        return self.transactions.aggregate(amount=Sum("amount", default=Decimal("0.0")))["amount"]
+        return self.transactions.aggregate(
+            amount=Sum("amount", default=Decimal("0.0"))
+        )["amount"]
 
     def __str__(self) -> str:
         return f"{self.label}"
@@ -36,7 +38,7 @@ class Transaction(models.Model):
         on_delete=models.CASCADE,
         related_name="transactions",
         null=True,
-        blank=True
+        blank=True,
     )
 
     _txid = models.CharField(
@@ -65,8 +67,10 @@ class Transaction(models.Model):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        self.txid = sha256(get_random_string(64).encode('utf-8')).hexdigest()
-        super().save(force_insert=False, force_update=False, using=None, update_fields=None)
+        self.txid = sha256(get_random_string(64).encode("utf-8")).hexdigest()
+        super().save(
+            force_insert=False, force_update=False, using=None, update_fields=None
+        )
 
     def __str__(self) -> str:
         return f"{self.amount} - {self.txid[:4]}..."
