@@ -43,8 +43,8 @@ class TransactionViewSet(
     queryset = Transaction.objects.select_related("wallet").order_by("amount")
     serializer_class = TransactionSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ["wallet__id", "_txid"]
-    ordering_fields = ["amount", "_txid"]
+    filterset_fields = ["wallet__id", "amount"]
+    ordering_fields = ["amount"]
 
     @extend_schema(
         responses={
